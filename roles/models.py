@@ -22,6 +22,15 @@ class Role(models.Model):
     def __str__(self):
         return self.name
 
+class BusinessElement(models.Model):
+    name = models.CharField("Элемент", max_length=100, unique=True)
+
+    class Meta:
+        verbose_name = "Бизнес-элемент"
+        verbose_name_plural = "Бизнес-элементы"
+
+    def __str__(self):
+        return self.name
 
 class AccessRoleRule(models.Model):
     role = models.ForeignKey(
@@ -32,7 +41,7 @@ class AccessRoleRule(models.Model):
         null=False,
         verbose_name="Роль"
     )
-    order = models.ForeignKey("Orders", on_delete=models.CASCADE)
+    element = models.ForeignKey("BusinessElement", on_delete=models.CASCADE)
     read = models.BooleanField("Чтение своего", default=False)
     read_all = models.BooleanField("Чтение всего", default=False)
     create = models.BooleanField("Создание", default=False)
@@ -43,5 +52,5 @@ class AccessRoleRule(models.Model):
     class Meta:
         verbose_name = "Правило доступа"
         verbose_name_plural = "Правила доступа"
-        unique_together = ("role", "order")
+        unique_together = ("role", "element")
 

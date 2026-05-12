@@ -77,7 +77,7 @@ Orders (owner → User)
 
 ```bash
 git clone https://github.com/Alwaline/backend_test_task
-cd DjangoProject
+cd backend_test_task
 ```
 
 ### 2. Создать `.env`

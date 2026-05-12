@@ -20,3 +20,27 @@ class Role(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class AccessRoleRule(models.Model):
+    role = models.ForeignKey(
+        "Role",
+        on_delete=models.CASCADE,
+        related_name="access_rule",
+        blank=False,
+        null=False,
+        verbose_name="Роль"
+    )
+    # element_id = models.ForeignKey("Element", on_delete=models.CASCADE)
+    read = models.BooleanField("Чтение своего", default=False)
+    read_all = models.BooleanField("Чтение всего", default=False)
+    create = models.BooleanField("Создание", default=False)
+    update = models.BooleanField("Изменение своего", default=False)
+    update_all = models.BooleanField("Изменение всего", default=False)
+    delete = models.BooleanField("Удаление своего", default=False)
+    delete_all = models.BooleanField("Удаление всего", default=False)
+    class Meta:
+        verbose_name = "Правило доступа"
+        verbose_name_plural = "Правила доступа"
+        # unique_together = ("role", "element")
+

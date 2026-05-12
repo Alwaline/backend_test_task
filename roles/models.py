@@ -1,5 +1,5 @@
 from django.db import models
-from business_logic.models import Orders
+
 
 class Role(models.Model):
     class RoleName(models.TextChoices):
@@ -22,6 +22,7 @@ class Role(models.Model):
     def __str__(self):
         return self.name
 
+
 class BusinessElement(models.Model):
     name = models.CharField("Элемент", max_length=100, unique=True)
 
@@ -31,6 +32,7 @@ class BusinessElement(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class AccessRoleRule(models.Model):
     role = models.ForeignKey(
@@ -49,8 +51,8 @@ class AccessRoleRule(models.Model):
     update_all = models.BooleanField("Изменение всего", default=False)
     delete = models.BooleanField("Удаление своего", default=False)
     delete_all = models.BooleanField("Удаление всего", default=False)
+
     class Meta:
         verbose_name = "Правило доступа"
         verbose_name_plural = "Правила доступа"
         unique_together = ("role", "element")
-

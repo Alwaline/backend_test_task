@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
-from users.models import User
+
 from roles.models import Role, AccessRoleRule, BusinessElement
+from users.models import User
 
 
 class Command(BaseCommand):
@@ -8,16 +9,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # Роли
-        admin_role,   _ = Role.objects.get_or_create(name=Role.RoleName.ADMIN)
+        admin_role, _ = Role.objects.get_or_create(name=Role.RoleName.ADMIN)
         manager_role, _ = Role.objects.get_or_create(name=Role.RoleName.MANAGER)
-        user_role,    _ = Role.objects.get_or_create(name=Role.RoleName.USER)
-        guest_role,   _ = Role.objects.get_or_create(name=Role.RoleName.GUEST)
+        user_role, _ = Role.objects.get_or_create(name=Role.RoleName.USER)
+        guest_role, _ = Role.objects.get_or_create(name=Role.RoleName.GUEST)
         self.stdout.write("Роли созданы")
 
         # Бизнес-элементы
-        orders_el,  _ = BusinessElement.objects.get_or_create(name="orders")
-        users_el,   _ = BusinessElement.objects.get_or_create(name="users")
-        roles_el,   _ = BusinessElement.objects.get_or_create(name="roles")
+        orders_el, _ = BusinessElement.objects.get_or_create(name="orders")
+        users_el, _ = BusinessElement.objects.get_or_create(name="users")
+        roles_el, _ = BusinessElement.objects.get_or_create(name="roles")
         self.stdout.write("Бизнес-элементы созданы")
 
         # Правила доступа — админ

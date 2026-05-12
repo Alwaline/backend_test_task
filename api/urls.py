@@ -9,7 +9,6 @@ router.register("roles", RoleViewSet, basename="roles")
 router.register("elements", BusinessElementViewSet, basename="elements")
 router.register("access-rules", AccessRoleRuleViewSet, basename="access-rules")
 
-
 urlpatterns = [
     path("auth/register/", RegisterView.as_view()),
     path("auth/login/", LoginView.as_view()),

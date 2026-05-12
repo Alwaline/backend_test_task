@@ -24,8 +24,8 @@ def HasPermission(element_name, action):
 
     return Permission
 
+
 class IsAdminPermission:
     def check(self, request):
         if not request.user.is_authenticated or request.user.role.name != "admin":
             raise PermissionDenied("Доступ только для администратора")
-

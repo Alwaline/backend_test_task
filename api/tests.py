@@ -1,7 +1,8 @@
 from django.test import TestCase
 from rest_framework.test import APIClient
-from users.models import User
+
 from roles.models import Role, AccessRoleRule, BusinessElement
+from users.models import User
 
 
 class BaseTestCase(TestCase):
@@ -10,7 +11,7 @@ class BaseTestCase(TestCase):
         self.client.defaults["SERVER_NAME"] = "localhost"
         # создаём роли
         self.admin_role = Role.objects.create(name=Role.RoleName.ADMIN)
-        self.user_role  = Role.objects.create(name=Role.RoleName.USER)
+        self.user_role = Role.objects.create(name=Role.RoleName.USER)
 
         # создаём бизнес-элемент
         self.orders_element = BusinessElement.objects.create(name="orders")

@@ -1,6 +1,5 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
-from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -72,6 +71,7 @@ class UserDetailView(APIView):
         user.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class MeView(APIView):
     def get(self, request):
         serializer = UserSerializer(request.user)
@@ -88,12 +88,14 @@ class MeView(APIView):
         request.user.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class LogoutView(APIView):
     def post(self, request):
         auth_header = request.META.get("HTTP_AUTHORIZATION", "")
         token = auth_header.split(" ")[1]
         TokenBlacklist.objects.create(token=token)
         return Response({"message": "Вы вышли из системы"}, status=status.HTTP_200_OK)
+
 
 class OrdersListView(APIView):
     def get_permissions(self):

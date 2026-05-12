@@ -1,6 +1,7 @@
-from django.contrib.auth import get_user_model
 from django.db import models
+
 from users.models import User
+
 
 class Orders(models.Model):
     name = models.CharField(max_length=100)
@@ -12,5 +13,3 @@ class Orders(models.Model):
 
     def __str__(self):
         return self.name
-
-

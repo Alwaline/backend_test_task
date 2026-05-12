@@ -14,6 +14,7 @@ EXEMPT_URLS = [
     "/api/v1/schema/",
 ]
 
+
 class JWTAuthenticationMiddleware(BaseAuthentication):
     def authenticate(self, request):
         auth_header = request.META.get("HTTP_AUTHORIZATION", "")
@@ -37,7 +38,6 @@ class JWTAuthenticationMiddleware(BaseAuthentication):
         if not user.is_active:
             return JsonResponse({"error": "User is inactive"}, status=status.HTTP_401_UNAUTHORIZED)
         request.user = user
-
 
         return user, token
 

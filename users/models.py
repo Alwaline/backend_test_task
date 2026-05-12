@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.db import models
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -36,7 +37,7 @@ class User(AbstractBaseUser):
         related_name="user",
     )
     objects = UserManager()
-    
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
@@ -46,6 +47,7 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+
 
 class TokenBlacklist(models.Model):
     token = models.TextField(unique=True)

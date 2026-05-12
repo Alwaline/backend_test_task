@@ -21,7 +21,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, data):
-        if data.get("password") != data.get("password2"):
+        if data.get("password1") != data.get("password2"):
             raise serializers.ValidationError("Пароли не совпадают")
         return data
 
@@ -62,6 +62,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Orders
         fields = ("id", "name", "owner")
+        read_only_fields = ("id", "owner")
 
 
 class RoleSerializer(serializers.ModelSerializer):

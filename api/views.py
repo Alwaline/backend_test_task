@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
@@ -5,7 +6,7 @@ from rest_framework.views import APIView
 
 from business_logic.models import Orders
 from roles.models import Role, AccessRoleRule, BusinessElement
-from users.models import User
+from users.models import User, TokenBlacklist
 from utils.jwt_utils import create_token
 from .permissions import HasPermission, IsAdminPermission
 from .serializers import (RegisterUserSerializer, LoginUserSerializer, OrderSerializer, UserSerializer,
@@ -21,6 +22,10 @@ class RegisterView(APIView):
 
 
 class LoginView(APIView):
+    @extend_schema(
+        request=LoginUserSerializer,
+        responses={200: {"type": "object", "properties": {"token": {"type": "string"}}}},
+    )
     def post(self, request):
         serializer = LoginUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -67,9 +72,34 @@ class UserDetailView(APIView):
         user.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class MeView(APIView):
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+
+    def patch(self, request):
+        serializer = UserSerializer(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request):
+        request.user.is_active = False
+        request.user.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class LogoutView(APIView):
+    def post(self, request):
+        auth_header = request.META.get("HTTP_AUTHORIZATION", "")
+        token = auth_header.split(" ")[1]
+        TokenBlacklist.objects.create(token=token)
+        return Response({"message": "Вы вышли из системы"}, status=status.HTTP_200_OK)
 
 class OrdersListView(APIView):
-    permission_classes = [HasPermission("orders", "read_all")]
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [HasPermission("orders", "create")()]
+        return [HasPermission("orders", "read_all")()]
 
     def get(self, request):
         orders = Orders.objects.all()
@@ -77,9 +107,6 @@ class OrdersListView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        perm = HasPermission("orders", "create")().has_permission(request, self)
-        if not perm:
-            return Response({"error": "Forbidden"}, status=status.HTTP_403_FORBIDDEN)
         serializer = OrderSerializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
         serializer.save(owner=request.user)

@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -13,8 +14,7 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = os.environ.get("DEBUG") == "True"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", ",").strip().split(",")
-
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get("ALLOWED_HOSTS", "").split(",")]
 INSTALLED_APPS = [
     # "django.contrib.admin",
     "django.contrib.auth",
@@ -23,11 +23,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "rest_framework.authtoken",
     "users.apps.UsersConfig",
     "roles.apps.RoleConfig",
     "business_logic.apps.BusinessLogicConfig",
     "api.apps.ApiConfig",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -35,7 +35,6 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "utils.middleware.authentication_middleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -97,7 +96,14 @@ STATIC_URL = "static/"
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [],
-    "DEFAULT_AUTHENTICATION_CLASSES": [],
+    "DEFAULT_AUTHENTICATION_CLASSES": ["api.middleware.JWTAuthenticationMiddleware"],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Backend TT API",
+    "DESCRIPTION": "Система аутентификации и авторизации",
+    "VERSION": "1.0.0",
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -107,3 +113,5 @@ AUTH_USER_MODEL = "users.User"
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
 ]
+
+TOKEN_EXPIRATION = timedelta(minutes=30)

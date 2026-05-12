@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 import jwt
 from django.conf import settings
@@ -7,8 +7,8 @@ from django.conf import settings
 def create_token(user):
     payload = {
         "user_id": user.id,
-        "exp": datetime.now(datetime.UTC) + settings.TOKEN_EXPIRATION,
-        "iat": datetime.now(datetime.UTC),
+        "exp": datetime.now(timezone.utc) + settings.TOKEN_EXPIRATION,
+        "iat": datetime.now(timezone.utc),
     }
     return jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
 

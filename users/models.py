@@ -46,3 +46,11 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+
+class TokenBlacklist(models.Model):
+    token = models.TextField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Отозванный токен"
+        verbose_name_plural = "Отозванные токены"

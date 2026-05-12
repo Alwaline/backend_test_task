@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from api.views import (RegisterView, LoginView, OrdersListView, OrderDetailView, UserListView, UserDetailView,
-                       RoleViewSet, BusinessElementViewSet, AccessRoleRuleViewSet)
+                       RoleViewSet, BusinessElementViewSet, AccessRoleRuleViewSet, MeView)
 
 router = routers.DefaultRouter()
 router.register("roles", RoleViewSet, basename="roles")
@@ -19,4 +19,5 @@ urlpatterns = [
     path("orders/<int:pk>/", OrderDetailView.as_view()),
     path("users/<int:pk>/", UserListView.as_view()),
     path("admin/", include(router.urls)),
+    path("auth/me/", MeView.as_view()),
 ]

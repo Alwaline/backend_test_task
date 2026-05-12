@@ -18,6 +18,11 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
+    """
+    Можно было бы и явно прописать
+    password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+    Но решил оставить это "за кадром"
+    """
     first_name = models.CharField("Имя", max_length=255)
     last_name = models.CharField("Фамилия", max_length=255)
     patronymic = models.CharField("Отчество", max_length=255, blank=True)

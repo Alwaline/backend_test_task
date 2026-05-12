@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "users.apps.UsersConfig",
     "roles.apps.RoleConfig",
+    "business_logic.apps.BusinessLogicConfig",
 ]
 
 MIDDLEWARE = [

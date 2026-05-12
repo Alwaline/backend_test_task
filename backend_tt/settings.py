@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "roles.apps.RoleConfig",
     "business_logic.apps.BusinessLogicConfig",
+    "api.apps.ApiConfig",
 ]
 
 MIDDLEWARE = [

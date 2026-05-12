@@ -5,7 +5,7 @@ User = get_user_model()
 
 class Orders(models.Model):
     name = models.CharField(max_length=100)
-    owner = models.ForeignKey("User", on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Заказ"

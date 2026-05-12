@@ -1,4 +1,5 @@
 from django.db import models
+from business_logic.models import Orders
 
 class Role(models.Model):
     class RoleName(models.TextChoices):
@@ -31,7 +32,7 @@ class AccessRoleRule(models.Model):
         null=False,
         verbose_name="Роль"
     )
-    # element_id = models.ForeignKey("Element", on_delete=models.CASCADE)
+    order = models.ForeignKey("Orders", on_delete=models.CASCADE)
     read = models.BooleanField("Чтение своего", default=False)
     read_all = models.BooleanField("Чтение всего", default=False)
     create = models.BooleanField("Создание", default=False)
@@ -42,5 +43,5 @@ class AccessRoleRule(models.Model):
     class Meta:
         verbose_name = "Правило доступа"
         verbose_name_plural = "Правила доступа"
-        # unique_together = ("role", "element")
+        unique_together = ("role", "order")
 

@@ -1,3 +1,4 @@
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import BasePermission
 
 from roles.models import BusinessElement, AccessRoleRule
@@ -23,3 +24,9 @@ def HasPermission(element_name, action):
             return getattr(rule, action, False)
 
     return Permission
+
+class IsAdminPermission:
+    def check(self, request):
+        if not request.user.is_authenticated or not request.user.role.name != "admin":
+            raise PermissionDenied("Доступ только для администратора")
+

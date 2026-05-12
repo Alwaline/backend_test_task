@@ -1,7 +1,9 @@
 from rest_framework import serializers
 
-from users.models import User
 from business_logic.models import Orders
+from roles.models import Role, BusinessElement, AccessRoleRule
+from users.models import User
+
 
 class RegisterUserSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
@@ -55,7 +57,40 @@ class LoginUserSerializer(serializers.Serializer):
         data["user"] = user
         return data
 
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Orders
         fields = ("id", "name", "owner")
+
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ("id", "name")
+        read_only_fields = ("id",)
+
+
+class BusinessElementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BusinessElement
+        fields = ("id", "name")
+        read_only_fields = ("id",)
+
+
+class AccessRoleRuleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AccessRoleRule
+        fields = (
+            "id",
+            "role",
+            "element",
+            "read",
+            "read_all",
+            "create",
+            "update",
+            "update_all",
+            "delete",
+            "delete_all",
+        )
+        read_only_fields = ("id",)

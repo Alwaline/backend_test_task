@@ -9,14 +9,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get(
     "SECRET_KEY",
-    "my-super-secret-key",)
+    "my-super-secret-key", )
 
 DEBUG = os.environ.get("DEBUG") == "True"
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", ",").strip().split(",")
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    # "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -66,7 +66,7 @@ DATABASES = {
         "USER": os.getenv("DB_USER", "postgres"),
         "PASSWORD": os.getenv("DB_PASSWORD", "postgres"),
         "HOST": os.getenv("DB_HOST", "localhost"),
-        "PORT": os.getenv("DB_PORT", "5433"), # у меня база на 5433 порту, но если у вас не так, то переставьте на 5432
+        "PORT": os.getenv("DB_PORT", "5433"),  # у меня база на 5433 порту, но если у вас не так, то переставьте на 5432
     }
 }
 

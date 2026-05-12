@@ -28,7 +28,7 @@ class User(AbstractBaseUser):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name="users",
+        related_name="user",
     )
     objects = UserManager()
     

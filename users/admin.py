@@ -1,19 +1,16 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 
 from .models import User
 
 @admin.register(User)
-class UserAdmin(UserAdmin):
+class UserAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         ("Personal info", {"fields": ("first_name", "last_name", "patronymic")}),
         ("Permissions", {
             "fields": (
                 "is_active",
-                "is_superuser",
-                "groups",
-                "user_permissions"
+                "role"
             ),
         }),
         ("Important dates", {"fields": ("last_login", "date_joined")}),
@@ -24,7 +21,6 @@ class UserAdmin(UserAdmin):
             "fields": ("email", "password1", "password2"),
         }),
     )
-    list_display = ("email", "first_name", "last_name", "is_staff")
+    list_display = ("email", "first_name", "last_name", "is_active", "role")
     search_fields = ("email", "first_name", "last_name")
     ordering = ("email",)
-    filter_horizontal = ("groups", "user_permissions",)

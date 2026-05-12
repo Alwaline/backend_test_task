@@ -2,8 +2,10 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from business_logic.models import Orders
 from utils.jwt_utils import create_token
-from .serializers import (RegisterUserSerializer, LoginUserSerializer)
+from .permissions import HasPermission
+from .serializers import (RegisterUserSerializer, LoginUserSerializer, OrderSerializer)
 
 
 class RegisterView(APIView):
@@ -20,3 +22,18 @@ class LoginView(APIView):
         user = serializer.validated_data["user"]
         token = create_token(user)
         return Response({"token": token.key}, status=status.HTTP_200_OK)
+
+class OrdersListView(APIView):
+    permission_classes = [HasPermission("orders", "read_all")]
+
+    def get(self, request):
+        orders = Orders.objects.all()
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        self.permission_classes = [HasPermission("orders", "create")]
+        serializer = OrderSerializer(data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save(owner=request.user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from users.models import User
+from business_logic.models import Orders
 
 class RegisterUserSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
@@ -53,3 +54,8 @@ class LoginUserSerializer(serializers.Serializer):
             raise serializers.ValidationError("Неверный логин или пароль")
         data["user"] = user
         return data
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Orders
+        fields = ("id", "name", "owner")
